@@ -22,4 +22,4 @@ app.use('/api/bookings', require('./routes/bookings'));
 app.use(express.static(path.join(__dirname, '../client')));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`Server listening on 0.0.0.0:${PORT}`));
