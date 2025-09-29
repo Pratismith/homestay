@@ -39,6 +39,15 @@ MyNest is a full-stack homestay booking application that allows users to search 
 
 ## Recent Changes
 
+### September 29, 2025 - Feature Enhancements & Improvements
+- ✅ Fixed registration and login system with role selection (Guest/Owner)
+- ✅ Created comprehensive owner dashboard with property management
+- ✅ Simplified homepage search to location-based with filter panel
+- ✅ Enhanced listing details page with amenities showcase
+- ✅ Added demo data seeding functionality (6 sample homestays)
+- ✅ Improved UI/UX with better styling and responsive design
+- ✅ Added availability tracking with room count management
+
 ### September 29, 2025 - Initial Replit Setup
 - ✅ Installed Node.js 20 and project dependencies
 - ✅ Fixed multer version incompatibility (1.4.5 → 1.4.5-lts.1)
@@ -53,14 +62,12 @@ MyNest is a full-stack homestay booking application that allows users to search 
 ## Important Notes
 
 ### Database Configuration
-⚠️ **MongoDB Atlas Connection Issue**: The application uses an external MongoDB Atlas database that requires IP whitelisting. Currently, the database connection fails because Replit's IP is not whitelisted.
+✅ **MongoDB Atlas**: The application is connected to MongoDB Atlas. The database is configured and working properly.
 
-**To fix this**:
-1. Go to your MongoDB Atlas dashboard
-2. Navigate to Network Access
-3. Add Replit's IP address or use `0.0.0.0/0` (allow all IPs) for development
-4. The server will continue to run and serve the frontend even without database connection
-5. API endpoints will work once MongoDB is connected
+**Demo Data**:
+- Visit `/demo.html` to populate the database with 6 sample homestays
+- Demo owner account will be created: `demo.owner@mynest.com` / `demo123`
+- Demo seeding is restricted to development environment only for security
 
 ### Environment Variables
 The following environment variables are configured in `server/.env`:
