@@ -17,6 +17,7 @@ connectDB(process.env.MONGO_URI);
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/homestays', require('./routes/homestay'));
 app.use('/api/bookings', require('./routes/bookings'));
+app.use('/api/demo', require('./routes/demo'));
 
 // Serve client static (optional)
 app.use(express.static(path.join(__dirname, '../client')));

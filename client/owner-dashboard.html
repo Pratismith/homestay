@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Dashboard - MyNest</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>MyNest - Owner Dashboard</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <span id="ownerName"></span> |
+      <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+  </header>
+  
+  <main>
+    <h2>Add New Property</h2>
+    <form id="addPropertyForm">
+      <input type="text" id="title" placeholder="Property Title" required>
+      <input type="text" id="location" placeholder="Location/Area" required>
+      <input type="number" id="pricePerNight" placeholder="Price per Night" required>
+      <textarea id="description" placeholder="Property Description" rows="4"></textarea>
+      <input type="number" id="availableRooms" placeholder="Number of Available Rooms" min="1" required>
+      
+      <label>Amenities:</label>
+      <div class="amenities-checkboxes">
+        <label><input type="checkbox" name="amenities" value="wifi"> WiFi</label>
+        <label><input type="checkbox" name="amenities" value="ac"> AC</label>
+        <label><input type="checkbox" name="amenities" value="kitchen"> Kitchen</label>
+        <label><input type="checkbox" name="amenities" value="parking"> Parking</label>
+        <label><input type="checkbox" name="amenities" value="tv"> TV</label>
+        <label><input type="checkbox" name="amenities" value="laundry"> Laundry</label>
+      </div>
+      
+      <input type="file" id="images" accept="image/*" multiple>
+      <textarea id="instructions" placeholder="Special Instructions for Guests" rows="3"></textarea>
+      
+      <button type="submit">Add Property</button>
+    </form>
+
+    <h2>My Properties</h2>
+    <div id="myProperties" class="grid"></div>
+  </main>
+
+  <script src="js/owner-dashboard.js"></script>
+</body>
+</html>

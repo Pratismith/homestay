@@ -4,17 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - MyNest</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <h2>Register (Client)</h2>
-  <form id="registerForm">
-    <input type="text" id="name" placeholder="Full Name" required><br>
-    <input type="email" id="email" placeholder="Email" required><br>
-    <input type="password" id="password" placeholder="Password" required><br>
-    <button type="submit">Register</button>
-  </form>
-
-  <p>Already have an account? <a href="login.html">Login here</a></p>
+  <header>
+    <h1>MyNest</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+  
+  <main>
+    <form id="registerForm">
+      <h2>Register</h2>
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="client">Guest</option>
+        <option value="owner">Property Owner</option>
+      </select>
+      <button type="submit">Register</button>
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </form>
+  </main>
 
   <script src="js/auth.js"></script>
 </body>

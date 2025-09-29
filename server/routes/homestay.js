@@ -11,12 +11,12 @@ router.post('/',
   upload.array('images', 6),
   async (req,res) => {
     try {
-      const { title, location, pricePerNight, description, amenities, instructions } = req.body;
+      const { title, location, pricePerNight, description, amenities, availableRooms, instructions } = req.body;
       const images = (req.files||[]).map(f => `/uploads/${f.filename}`);
       const amenitiesArr = amenities ? JSON.parse(amenities) : [];
       const homestay = await Homestay.create({
         owner: req.user._id, title, location, pricePerNight, images,
-        description, amenities: amenitiesArr, instructions
+        description, amenities: amenitiesArr, availableRooms, instructions
       });
       res.json(homestay);
     } catch (e) { console.error(e); res.status(500).send('Server error'); }
@@ -36,6 +36,14 @@ router.get('/search', async (req,res) => {
     }
     const results = await Homestay.find(filter).skip((page-1)*limit).limit(Number(limit));
     res.json(results);
+  } catch (e) { console.error(e); res.status(500).send('Server error'); }
+});
+
+// Get owner's properties
+router.get('/my-properties', auth('owner'), async (req,res) => {
+  try {
+    const properties = await Homestay.find({ owner: req.user._id }).sort({ createdAt: -1 });
+    res.json(properties);
   } catch (e) { console.error(e); res.status(500).send('Server error'); }
 });
 

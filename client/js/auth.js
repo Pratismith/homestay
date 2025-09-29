@@ -1,5 +1,5 @@
 // Backend base URL
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "/api/auth";
 
 // ---------- Register ----------
 const registerForm = document.getElementById("registerForm");
@@ -10,20 +10,27 @@ if (registerForm) {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
 
     try {
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, role })
       });
 
       const data = await res.json();
       if (res.ok) {
-        alert("✅ Registered successfully. Please login.");
-        window.location.href = "login.html";
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        alert("✅ Registered successfully!");
+        if (data.user.role === 'owner') {
+          window.location.href = "owner-dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
-        alert("❌ " + data.message);
+        alert("❌ " + (data.msg || data.message));
       }
     } catch (err) {
       console.error(err);
@@ -50,13 +57,16 @@ if (loginForm) {
 
       const data = await res.json();
       if (res.ok) {
-        // save token to localStorage
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         alert("✅ Login successful!");
-        // redirect to dashboard
-        window.location.href = "dashboard.html";
+        if (data.user.role === 'owner') {
+          window.location.href = "owner-dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
-        alert("❌ " + data.message);
+        alert("❌ " + (data.msg || data.message));
       }
     } catch (err) {
       console.error(err);

@@ -8,6 +8,7 @@ const HomestaySchema = new mongoose.Schema({
   images: [String], // URLs or file paths (e.g., /uploads/xxx.jpg)
   description: String,
   amenities: [String], // e.g., ['wifi','ac','kitchen']
+  availableRooms: { type: Number, default: 1 },
   instructions: String, // owner inserted
   createdAt: { type: Date, default: Date.now }
 });

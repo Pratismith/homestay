@@ -77,6 +77,72 @@ main {
   background: #357abd;
 }
 
+.filter-panel {
+  background: #fff;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.filter-panel h3 {
+  margin-bottom: 1rem;
+}
+
+.filter-panel label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.filter-panel input,
+.filter-panel select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-panel button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  margin-top: 1rem;
+}
+
+.filter-panel button:hover {
+  background: #357abd;
+}
+
+#clearFiltersBtn {
+  background: #95a5a6;
+}
+
+#clearFiltersBtn:hover {
+  background: #7f8c8d;
+}
+
+.amenities-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.amenities-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

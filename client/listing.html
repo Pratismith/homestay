@@ -1,47 +1,188 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"/><title>Listing</title><link rel="stylesheet" href="css/style.css"/></head>
+<head>
+  <meta charset="utf-8"/>
+  <title>Listing Details - MyNest</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .listing-detail {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .gallery img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .detail-section {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    .amenities-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .amenity-tag {
+      background: #4a90e2;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .booking-section {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #fff;
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+    }
+    .booking-section label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .booking-section input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
 <body>
-  <a href="index.html">Back</a>
-  <div id="content"></div>
+  <header>
+    <h1>MyNest</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="register.html">Register</a> |
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="listing-detail" id="content"></div>
+  </main>
 
   <script>
     const API_BASE = '/api';
     async function load() {
       const params = new URLSearchParams(location.search);
       const id = params.get('id');
+      
+      if (!id) {
+        document.getElementById('content').innerHTML = '<p>No listing selected</p>';
+        return;
+      }
+      
       const res = await fetch(`${API_BASE}/homestays/${id}`);
       const h = await res.json();
       const c = document.getElementById('content');
+      
+      const amenitiesList = h.amenities && h.amenities.length > 0 
+        ? h.amenities.map(a => `<span class="amenity-tag">${a}</span>`).join('')
+        : '<p>No amenities listed</p>';
+      
+      const imagesGallery = h.images && h.images.length > 0
+        ? h.images.map(src => `<img src="${src}" alt="Property image" />`).join('')
+        : '<img src="/placeholder.png" alt="No image" />';
+      
       c.innerHTML = `
         <h2>${h.title}</h2>
-        <div class="gallery">${h.images.map(src=>`<img src="${src}" />`).join('')}</div>
-        <p>${h.description}</p>
-        <p>Amenities: ${h.amenities.join(', ')}</p>
-        <p>Instructions: ${h.instructions || '—'}</p>
-        <p>₹${h.pricePerNight}/night</p>
-
-        <h3>Check availability & Book</h3>
-        <label>Start: <input type="date" id="start" /></label>
-        <label>End: <input type="date" id="end" /></label>
-        <label>Aadhaar (last 4 digits only recommended): <input id="aad" /></label>
-        <button id="bookBtn">Book</button>
-        <div id="msg"></div>
+        <p style="color: #666; font-size: 1.1rem;">${h.location}</p>
+        
+        <div class="gallery">${imagesGallery}</div>
+        
+        <div class="detail-section">
+          <h3>Description</h3>
+          <p>${h.description || 'No description provided'}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Price</h3>
+          <p style="font-size: 1.5rem; font-weight: bold; color: #4a90e2;">₹${h.pricePerNight}/night</p>
+          ${h.availableRooms ? `<p>Available Rooms: <strong>${h.availableRooms}</strong></p>` : ''}
+        </div>
+        
+        <div class="detail-section">
+          <h3>Amenities & Facilities</h3>
+          <div class="amenities-list">${amenitiesList}</div>
+        </div>
+        
+        ${h.instructions ? `
+        <div class="detail-section">
+          <h3>Special Instructions</h3>
+          <p>${h.instructions}</p>
+        </div>
+        ` : ''}
+        
+        <div class="booking-section">
+          <h3>Check Availability & Book</h3>
+          <label>Check-in Date:</label>
+          <input type="date" id="start" />
+          
+          <label>Check-out Date:</label>
+          <input type="date" id="end" />
+          
+          <label>Aadhaar (last 4 digits - optional):</label>
+          <input id="aad" placeholder="Last 4 digits" maxlength="4" />
+          
+          <button id="bookBtn">Book Now</button>
+          <div id="msg" style="margin-top: 1rem;"></div>
+        </div>
       `;
 
-      document.getElementById('bookBtn').addEventListener('click', async ()=>{
+      document.getElementById('bookBtn').addEventListener('click', async () => {
         const token = localStorage.getItem('token');
-        if (!token) return alert('Please login as client to book');
+        if (!token) {
+          alert('Please login to book this property');
+          window.location.href = 'login.html';
+          return;
+        }
+        
         const start = document.getElementById('start').value;
         const end = document.getElementById('end').value;
         const aad = document.getElementById('aad').value;
+        
+        if (!start || !end) {
+          alert('Please select check-in and check-out dates');
+          return;
+        }
+        
         const res = await fetch('/api/bookings', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({ homestayId: id, startDate: start, endDate: end, aadhaar: aad })
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token 
+          },
+          body: JSON.stringify({ 
+            homestayId: id, 
+            startDate: start, 
+            endDate: end, 
+            aadhaar: aad 
+          })
         });
+        
         const data = await res.json();
-        document.getElementById('msg').innerText = data.message || data.msg || JSON.stringify(data);
+        const msgEl = document.getElementById('msg');
+        
+        if (res.ok) {
+          msgEl.innerHTML = '<p class="success">✅ Booking successful!</p>';
+        } else {
+          msgEl.innerHTML = `<p class="error">❌ ${data.message || data.msg || 'Booking failed'}</p>`;
+        }
       });
     }
     load();

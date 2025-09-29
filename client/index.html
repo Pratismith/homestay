@@ -17,17 +17,29 @@
 
   <main>
     <section class="search-panel">
-      <input id="q" placeholder="Search city, name or description" />
+      <input id="location" placeholder="Search by location" />
+      <button id="searchBtn">Search</button>
+      <button id="filterBtn">Filters</button>
+    </section>
+
+    <div id="filterPanel" class="filter-panel" style="display: none;">
+      <h3>Filters</h3>
+      <label>Area/Location:</label>
+      <input id="area" type="text" placeholder="Filter by area" />
+      
+      <label>Price Range:</label>
       <input id="minPrice" type="number" placeholder="Min price" />
       <input id="maxPrice" type="number" placeholder="Max price" />
-      <select id="amenities">
-        <option value="">Any amenities</option>
-        <option value="wifi">WiFi</option>
-        <option value="ac">AC</option>
-        <option value="kitchen">Kitchen</option>
+      
+      <label>Availability:</label>
+      <select id="availability">
+        <option value="">Any</option>
+        <option value="available">Available</option>
       </select>
-      <button id="searchBtn">Search</button>
-    </section>
+      
+      <button id="applyFiltersBtn">Apply Filters</button>
+      <button id="clearFiltersBtn">Clear</button>
+    </div>
 
     <section id="results" class="grid"></section>
   </main>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Demo Data - MyNest</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>MyNest - Demo Data</h1>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+  
+  <main>
+    <div style="max-width: 600px; margin: 2rem auto; text-align: center;">
+      <h2>Add Demo Homestays</h2>
+      <p>Click the button below to populate the database with sample homestays.</p>
+      <p><strong>Note:</strong> Database must be connected for this to work.</p>
+      
+      <button id="seedBtn" style="padding: 1rem 2rem; font-size: 1.1rem; margin-top: 1rem;">
+        Add Demo Data
+      </button>
+      
+      <div id="result" style="margin-top: 2rem;"></div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('seedBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('seedBtn');
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+      
+      try {
+        const res = await fetch('/api/demo/seed', {
+          method: 'POST'
+        });
+        
+        const data = await res.json();
+        const resultDiv = document.getElementById('result');
+        
+        if (res.ok) {
+          resultDiv.innerHTML = `
+            <div class="success">
+              <p>✅ ${data.msg}</p>
+              <p>Created ${data.count} homestays</p>
+              ${data.demoOwner ? `
+                <p style="margin-top: 1rem;"><strong>Demo Owner Account:</strong></p>
+                <p>Email: ${data.demoOwner.email}</p>
+                <p>Password: ${data.demoOwner.password}</p>
+              ` : ''}
+              <p style="margin-top: 1rem;">
+                <a href="index.html">Go to Homepage</a> | 
+                <a href="login.html">Login as Owner</a>
+              </p>
+            </div>
+          `;
+        } else {
+          resultDiv.innerHTML = `<div class="error">❌ ${data.msg || 'Error adding demo data'}</div>`;
+        }
+      } catch (err) {
+        document.getElementById('result').innerHTML = 
+          `<div class="error">❌ Error: ${err.message}. Make sure database is connected.</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Add Demo Data';
+      }
+    });
+  </script>
+</body>
+</html>
