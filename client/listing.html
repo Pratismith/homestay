@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"/><title>Listing</title><link rel="stylesheet" href="css/style.css"/></head>
+<body>
+  <a href="index.html">Back</a>
+  <div id="content"></div>
+
+  <script>
+    const API_BASE = '/api';
+    async function load() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const res = await fetch(`${API_BASE}/homestays/${id}`);
+      const h = await res.json();
+      const c = document.getElementById('content');
+      c.innerHTML = `
+        <h2>${h.title}</h2>
+        <div class="gallery">${h.images.map(src=>`<img src="${src}" />`).join('')}</div>
+        <p>${h.description}</p>
+        <p>Amenities: ${h.amenities.join(', ')}</p>
+        <p>Instructions: ${h.instructions || '—'}</p>
+        <p>₹${h.pricePerNight}/night</p>
+
+        <h3>Check availability & Book</h3>
+        <label>Start: <input type="date" id="start" /></label>
+        <label>End: <input type="date" id="end" /></label>
+        <label>Aadhaar (last 4 digits only recommended): <input id="aad" /></label>
+        <button id="bookBtn">Book</button>
+        <div id="msg"></div>
+      `;
+
+      document.getElementById('bookBtn').addEventListener('click', async ()=>{
+        const token = localStorage.getItem('token');
+        if (!token) return alert('Please login as client to book');
+        const start = document.getElementById('start').value;
+        const end = document.getElementById('end').value;
+        const aad = document.getElementById('aad').value;
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ homestayId: id, startDate: start, endDate: end, aadhaar: aad })
+        });
+        const data = await res.json();
+        document.getElementById('msg').innerText = data.message || data.msg || JSON.stringify(data);
+      });
+    }
+    load();
+  </script>
+</body>
+</html>

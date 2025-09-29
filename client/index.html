@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>MyNest — Find Homestays</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>MyNest</h1>
+    <nav>
+      <a href="register.html">Register</a> |
+      <a href="login.html">Login</a> |
+      <a href="owner-dashboard.html">Owner</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="search-panel">
+      <input id="q" placeholder="Search city, name or description" />
+      <input id="minPrice" type="number" placeholder="Min price" />
+      <input id="maxPrice" type="number" placeholder="Max price" />
+      <select id="amenities">
+        <option value="">Any amenities</option>
+        <option value="wifi">WiFi</option>
+        <option value="ac">AC</option>
+        <option value="kitchen">Kitchen</option>
+      </select>
+      <button id="searchBtn">Search</button>
+    </section>
+
+    <section id="results" class="grid"></section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
