@@ -9,8 +9,8 @@ const connectDB = async (mongoURI) => {
     });
     console.log('MongoDB connected');
   } catch (err) {
-    console.error(err);
-    process.exit(1);
+    console.error('MongoDB connection error:', err.message);
+    console.warn('⚠️  Server will continue without database. API endpoints will not work until MongoDB is connected.');
   }
 };
 
